@@ -28,13 +28,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="64dp"
+        app:bio="bio test"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:name="test name"
-        app:bio="bio test"
-        app:picture_url="pictureurl"/>
+        app:picture_url="https://this-person-does-not-exist.com/img/avatar-b3d73412c4e65b8fe7909b4e84e6f831.jpg" />
 
     <Button
         android:id="@+id/button"

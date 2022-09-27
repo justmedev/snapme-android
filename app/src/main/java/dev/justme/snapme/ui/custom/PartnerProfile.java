@@ -6,10 +6,12 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import dev.justme.snapme.R;
+import dev.justme.snapme.helpers.AsyncImageLoader;
 
 public class PartnerProfile extends FrameLayout {
 
@@ -32,18 +34,18 @@ public class PartnerProfile extends FrameLayout {
         if (rawAttrs == null) Log.e(null, "rawAttrs have to be passed!");
         TypedArray attrs = context.getTheme().obtainStyledAttributes(rawAttrs, R.styleable.PartnerProfile, 0, 0);
 
+        View view = inflate(getContext(), R.layout.partner_profile, this);
+
         try {
             String name = attrs.getString(R.styleable.PartnerProfile_name);
             String bio = attrs.getString(R.styleable.PartnerProfile_bio);
             String pictureUrl = attrs.getString(R.styleable.PartnerProfile_picture_url);
 
-            Log.d(null, String.format("Name: %s; Bio: %s; PictureUrl: %s", name, bio, pictureUrl));
+            ((TextView)view.findViewById(R.id.partner_profile_name)).setText(name);
+            ((TextView)view.findViewById(R.id.partner_profile_bio)).setText(bio);
+            new AsyncImageLoader(view.findViewById(R.id.partner_profile_image)).execute(pictureUrl);
         } finally {
             attrs.recycle();
         }
-
-        View view = inflate(getContext(), R.layout.partner_profile, this);
-        view.findViewById(R.id.partner_profile_name);
-        view.findViewById(R.id.partner_profile_name);
     }
 }
