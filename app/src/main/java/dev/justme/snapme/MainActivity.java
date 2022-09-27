@@ -1,6 +1,7 @@
 package dev.justme.snapme;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -11,6 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import dev.justme.snapme.databinding.ActivityMainBinding;
+import dev.justme.snapme.helpers.DataManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        DataManager dataManager = DataManager.getDataManager();
+        dataManager.mySelf.name = "test";
+        dataManager.mySelf.age = 14;
+        dataManager.mySelf.friends = 3;
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each

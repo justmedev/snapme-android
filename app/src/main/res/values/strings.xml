@@ -5,4 +5,9 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_profile">Profile</string>
     <string name="loading">Loading</string>
+
+    <string name="birthday_cake_emoji">🎂</string>
+    <string name="crown_emoji">👑</string>
+
+    <string name="profile_picture_alt">Profile picture</string>
 </resources>
