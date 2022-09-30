@@ -11,13 +11,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import java.io.IOException;
-import java.util.concurrent.Executors;
-
 import dev.justme.snapme.databinding.ActivityMainBinding;
 import dev.justme.snapme.helpers.DataManager;
-import dev.justme.snapme.helpers.HttpClient;
-import dev.justme.snapme.helpers.Profile;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,17 +21,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Executors.newSingleThreadExecutor().execute(() -> {
-            try {
-                HttpClient httpClient = new HttpClient();
-                Profile profile = httpClient.getAndConvertToObject("http://192.168.4.48:8080/profile?uuid=9735bd33-a9a4-4abb-8014-3ba9705a3141", Profile.class);
-                Log.d("SNAPME", profile.getName());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <!-- FIXME: usesCleartextTraffic=false when using HTTPS -->
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
