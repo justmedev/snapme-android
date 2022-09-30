@@ -3,13 +3,13 @@ package dev.justme.snapme.helpers;
 public class Profile {
     private final String uuid;
     private final String name;
-    private final int birthdayTimestamp;
+    private final long birthdayTimestamp;
     private final String[] pictureUrls;
     private final int friends;
     private final String bio;
     private final String[] interests;
 
-    public Profile(String uuid, String name, int birthdayTimestamp, String[] pictureUrls, int friends, String bio, String[] interests) {
+    public Profile(String uuid, String name, String bio, long birthdayTimestamp, int friends, String[] pictureUrls, String[] interests) {
         this.uuid = uuid;
         this.name = name;
         this.birthdayTimestamp = birthdayTimestamp;
@@ -27,7 +27,7 @@ public class Profile {
         return name;
     }
 
-    public int getBirthdayTimestamp() {
+    public long getBirthdayTimestamp() {
         return birthdayTimestamp;
     }
 
