@@ -3,6 +3,8 @@ package dev.justme.snapme.helpers.http;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,8 +21,29 @@ enum RequestMethod {
     PUT,
 }
 
+/**
+ * Example usage PUT and GET:
+ <pre><code style="color:#abb2bf"><span style="color:#e6c07b">HttpClient</span> httpClient = <span style="color:#c678dd">new</span> <span style="color:#e6c07b">HttpClient<span style="color:#e8ba36">()</span></span>;
+ <span style="color:#e6c07b">Executors</span>.<span style="color:#61afef">newSingleThreadExecutor</span><span style="color:#e8ba36">()</span>.<span style="color:#61afef">execute</span><span style="color:#abb2bf"><span style="color:#abb2bf"><span style="color:#e8ba36">(()</span></span> -&gt;</span> {
+ <span style="color:#c678dd">&nbsp;&nbsp;&nbsp;try</span> {
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#e6c07b">HttpResult&lt;Profile&gt;</span> httpResult = httpClient.<span style="color:#61afef">getAndConvertToObject</span><span style="color:#e8ba36">(</span><span style="color:#98c379">&quot;http://192.168.4.48:8080/profile?uuid=e8420a7e-964d-4ac7-838e-37b08b6b25dc&quot;</span>, <span style="color:#e6c07b">Profile</span>.<span style="color:#c678dd">class</span><span style="color:#e8ba36">)</span>;
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#e6c07b">Log</span>.<span style="color:#61afef">d</span><span style="color:#e8ba36">(</span><span style="color:#98c379">&quot;SNAPME&quot;</span>, httpResult.<span style="color:#61afef">getBody</span><span style="color:#e8ba36">()</span>.<span style="color:#61afef">getBirthday</span><span style="color:#e8ba36">()</span>.<span style="color:#61afef">toString</span><span style="color:#e8ba36">())</span>;
+ &nbsp;&nbsp;&nbsp;&nbsp;} <span style="color:#c678dd">catch</span> <span style="color:#e8ba36">(</span><span style="color:#e6c07b">IOException e</span><span style="color:#e8ba36">)</span> {
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#e6c07b">e</span>.<span style="color:#61afef">printStackTrace</span><span style="color:#e8ba36">()</span>;
+ &nbsp;&nbsp;&nbsp;&nbsp;}
+ }<span style="color:#e8ba36">)</span>;<br>
+ <span style="color:#e6c07b">Executors</span>.<span style="color:#61afef">newSingleThreadExecutor</span><span style="color:#e8ba36">()</span>.<span style="color:#61afef">execute</span><span style="color:#abb2bf"><span style="color:#abb2bf"><span style="color:#e8ba36">(()</span></span> -&gt;</span> {
+ <span style="color:#c678dd">&nbsp;&nbsp;&nbsp;&nbsp;try</span> {
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#e6c07b">Profile</span> profile = <span style="color:#c678dd">new</span> <span style="color:#e6c07b">Profile</span><span style="color:#e8ba36">(</span><span style="color:#98c379">&quot;Ilja&quot;</span>, <span style="color:#98c379">&quot;Hey Guys! I am ilja!&quot;</span>, <span style="color:#c678dd">new</span> <span style="color:#e6c07b">Date</span><span style="color:#e8ba36">()</span>, <span style="color:#d19a66">0</span>,  <span style="color:#c678dd">new</span> <span style="color:#e6c07b">String</span><span style="color:#e8ba36">[]</span>{}, <span style="color:#c678dd">new</span> <span style="color:#e6c07b">String</span><span style="color:#e8ba36">[]</span>{<span style="color:#98c379">&quot;Music&quot;</span>, <span style="color:#98c379">&quot;Gaming&quot;</span>, <span style="color:#98c379">&quot;Deejaying&quot;</span>, <span style="color:#98c379">&quot;Partying&quot;</span>}<span style="color:#e8ba36">)</span>;
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#e6c07b">HttpResult</span>&lt;<span style="color:#e6c07b">String</span>&gt; httpResult = httpClient.<span style="color:#61afef">put</span><span style="color:#e8ba36">(</span><span style="color:#98c379">&quot;http://192.168.4.48:8080/profile&quot;</span>, profile<span style="color:#e8ba36">)</span>;
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#e6c07b">Log</span>.<span style="color:#61afef">d</span><span style="color:#e8ba36">(</span><span style="color:#98c379">&quot;SNAPME&quot;</span>, <span style="color:#e6c07b">String</span>.<span style="color:#61afef">format</span><span style="color:#e8ba36">(</span><span style="color:#98c379">&quot;[POST %s]: %s&quot;</span>, httpResult.<span style="color:#61afef">getStatusCode</span><span style="color:#e8ba36">()</span>, httpResult.<span style="color:#61afef">getBody</span><span style="color:#e8ba36">()</span><span style="color:#e8ba36">))</span>;
+ &nbsp;&nbsp;&nbsp;&nbsp;} <span style="color:#c678dd">catch</span> <span style="color:#e8ba36">(</span><span style="color:#e6c07b">IOException e</span><span style="color:#e8ba36">)</span> {
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#e6c07b">e</span>.<span style="color:#61afef">printStackTrace</span><span style="color:#e8ba36">()</span>;
+ &nbsp;&nbsp;&nbsp;&nbsp;}
+ }<span style="color:#e8ba36">)</span>;</code></pre>
+ */
 public class HttpClient {
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss. SSSXXX").create();
 
     //region http get
     public <T> HttpResult<T> getAndConvertToObject(String url, Class<T> object) throws IOException {
