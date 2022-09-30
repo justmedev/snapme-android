@@ -1,8 +1,6 @@
 package dev.justme.snapme;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -13,19 +11,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dev.justme.snapme.databinding.ActivityMainBinding;
 import dev.justme.snapme.helpers.DataManager;
 import dev.justme.snapme.helpers.HttpClient;
-import dev.justme.snapme.helpers.TaskRunner;
+import dev.justme.snapme.helpers.Profile;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,15 +27,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TaskRunner taskRunner = new TaskRunner();
-        HttpClient httpClient = new HttpClient();
-        try {
-            taskRunner.executeAsync((String)httpClient.get("http://192.168.4.48:8080/profiles/?uuid=9735bd33-a9a4-4abb-8014-3ba9705a3141"), (String data) -> {
-                Log.d("SNAPME", data);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                HttpClient httpClient = new HttpClient();
+                Profile profile = httpClient.getAndConvertToObject("http://192.168.4.48:8080/profile?uuid=9735bd33-a9a4-4abb-8014-3ba9705a3141", Profile.class);
+                Log.d("SNAPME", profile.getName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
